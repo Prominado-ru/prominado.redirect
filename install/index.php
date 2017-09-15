@@ -35,6 +35,13 @@ class prominado_redirect extends \CModule
 
 	function DoInstall()
 	{
+		if (CheckVersion('17.0.11', ModuleManager::getVersion('main'))) {
+			global $APPLICATION;
+			$APPLICATION->ThrowException(Loc::getMessage('PROMINADO_REDIRECT_MODULE_ERROR_MAIN'));
+
+			return false;
+		}
+
 		$this->InstallDB();
 		$this->InstallEvents();
 		$this->InstallFiles();
