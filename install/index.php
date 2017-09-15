@@ -46,7 +46,7 @@ class prominado_redirect extends \CModule
 	function InstallDB()
 	{
 		ModuleManager::registerModule($this->MODULE_ID);
-		Loader::includeSharewareModule('yaroslavl.redirects');
+		Loader::includeSharewareModule('prominado.redirect');
 		$connection = Application::getConnection();
 		if (!$connection->isTableExists(RedirectTable::getTableName())) {
 			RedirectTable::getEntity()->createDbTable();
@@ -81,7 +81,7 @@ class prominado_redirect extends \CModule
 	function UnInstallDB()
 	{
 		ModuleManager::unRegisterModule($this->MODULE_ID);
-		Loader::includeSharewareModule('yaroslavl.redirects');
+		Loader::includeSharewareModule('prominado.redirect');
 		$connection = Application::getConnection();
 		if ($connection->isTableExists(RedirectTable::getTableName())) {
 			$connection->dropTable(RedirectTable::getTableName());
