@@ -1,0 +1,9 @@
+<?
+$MESS['PROMINADO_REDIRECT_OLD_URL'] = 'Старый URL';
+$MESS['PROMINADO_REDIRECT_NEW_URL'] = 'Новый URL';
+$MESS['PROMINADO_REDIRECT_CODE'] = 'Код редиректа';
+$MESS['PROMINADO_REDIRECT_EDIT'] = 'Изменить';
+$MESS['PROMINADO_REDIRECT_DELETE'] = 'Удалить';
+$MESS['PROMINADO_REDIRECT_ARE_U_SURE'] = 'Вы уверены?';
+$MESS['PROMINADO_REDIRECT_NEW'] = 'Добавить редирект';
+$MESS['PROMINADO_REDIRECT_LIST'] = 'Список редиректов';

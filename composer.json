@@ -1,0 +1,27 @@
+{
+  "name": "prominado/redirect",
+  "description": "Simple HTTP redirects using Bitrix Admin Panel",
+  "version": "1.0.0-alpha",
+  "type": "bitrix-module",
+  "license": "MIT",
+  "keywords": [
+    "bitrix",
+    "redirect"
+  ],
+  "support": {
+    "email": "sergey@s-panteleev.ru"
+  },
+  "authors": [
+    {
+      "name": "Sergey Panteleev",
+      "email": "sergey@s-pantelev.ru"
+    }
+  ],
+  "extra": {
+    "installer-name": "prominado.redirect"
+  },
+  "require": {
+    "php": ">=7.0.0",
+    "composer/installers": "~1"
+  }
+}
