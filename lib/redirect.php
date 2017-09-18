@@ -2,10 +2,10 @@
 
 namespace Prominado\Redirect;
 
+use Bitrix\Main\Entity\TextField;
 use Bitrix\Main\Localization\Loc;
 use Bitrix\Main\Entity\DataManager;
 use Bitrix\Main\Entity\IntegerField;
-use Bitrix\Main\Entity\StringField;
 use Bitrix\Main\Entity\Validator\Unique;
 
 Loc::loadMessages(__FILE__);
@@ -26,7 +26,7 @@ class RedirectTable extends DataManager
 				'title'        => Loc::getMessage('PROMINADO_REDIRECT_ID')
 			]),
 
-			new StringField('OLD_URL', [
+			new TextField('OLD_URL', [
 				'required'   => true,
 				'title'      => Loc::getMessage('PROMINADO_REDIRECT_OLD_URL'),
 				'validation' => function () {
@@ -36,7 +36,7 @@ class RedirectTable extends DataManager
 				}
 			]),
 
-			new StringField('NEW_URL', [
+			new TextField('NEW_URL', [
 				'required' => true,
 				'title'    => Loc::getMessage('PROMINADO_REDIRECT_NEW_URL')
 			]),

@@ -9,7 +9,7 @@ class Core
 	function init()
 	{
 		$page = RedirectTable::getList([
-			'filter' => ['OLD_URL' => Context::getCurrent()->getRequest()->getRequestedPage()],
+			'filter' => ['=OLD_URL' => Context::getCurrent()->getRequest()->getRequestUri()],
 			'cache'  => [
 				'ttl'         => 36000000,
 				'cache_joins' => true,
