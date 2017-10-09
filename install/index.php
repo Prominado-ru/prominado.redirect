@@ -106,7 +106,6 @@ class prominado_redirect extends \CModule
 
 	function UnInstallFiles()
 	{
-		DeleteDirFiles(Application::getDocumentRoot() . '/local/modules/yaroslavl.redirects/install/admin/',
-			Application::getDocumentRoot() . '/bitrix/admin/');
+		DeleteDirFiles(__DIR__ . '/admin/', Application::getDocumentRoot() . '/bitrix/admin/');
 	}
 }
