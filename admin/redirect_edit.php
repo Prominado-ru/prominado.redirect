@@ -64,7 +64,7 @@ if (
 $menu = [];
 $menu[] = [
 	'TEXT'  => Loc::getMessage('PROMINADO_REDIRECT_REDIRECT_LIST'),
-	'LINK'  => '/bitrix/admin/yaroslavl_redirect_list.php?lang=' . LANG,
+	'LINK'  => '/bitrix/admin/prominado_redirect_list.php?lang=' . LANG,
 	'ICON'  => 'btn_list',
 	'TITLE' => Loc::getMessage('PROMINADO_REDIRECT_REDIRECT_LIST'),
 ];
