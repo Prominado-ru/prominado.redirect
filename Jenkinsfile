@@ -27,7 +27,7 @@ pipeline {
     }
     stage('Print End') {
       steps {
-        sh 'print "End";'
+        sh 'echo "End";'
       }
     }
   }
