@@ -1,2 +1,6 @@
-/.idea
-/composer.lock
+.idea/
+node_modules/
+dist/
+build/
+package-lock.json
+/vendor/

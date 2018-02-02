@@ -1,0 +1,26 @@
+{
+  "name": "prominado.redirect",
+  "version": "1.0.3",
+  "description": "",
+  "main": "gulpfile.js",
+  "devDependencies": {
+    "del": "^3.0.0",
+    "gulp": "^3.9.1",
+    "gulp-folders": "^1.1.0",
+    "gulp-gzip": "^1.4.0",
+    "gulp-iconv": "0.0.1",
+    "gulp-tar": "^2.0.0",
+    "moment": "^2.19.3",
+    "run-sequence": "^2.2.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Prominado-ru/prominado.redirect.git"
+  },
+  "author": "Panteleev Sergey <sergey@s-panteleev.ru>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Prominado-ru/prominado.redirect/issues"
+  },
+  "homepage": "https://github.com/Prominado-ru/prominado.redirect#readme"
+}

@@ -8,7 +8,7 @@ use Prominado\Redirect\RedirectTable;
 
 Loc::loadLanguageFile(__FILE__);
 
-class prominado_redirect extends \CModule
+class prominado_redirect extends CModule
 {
 	var $MODULE_ID = 'prominado.redirect';
 	var $MODULE_VERSION;
@@ -22,7 +22,7 @@ class prominado_redirect extends \CModule
 	function prominado_redirect()
 	{
 		$arModuleVersion = [];
-		include(__DIR__ . '/version.php');
+        include __DIR__ . '/version.php';
 		if (is_array($arModuleVersion) && array_key_exists('VERSION', $arModuleVersion)) {
 			$this->MODULE_VERSION = $arModuleVersion['VERSION'];
 			$this->MODULE_VERSION_DATE = $arModuleVersion['VERSION_DATE'];
