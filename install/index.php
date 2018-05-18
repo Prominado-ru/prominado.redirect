@@ -1,4 +1,4 @@
-<?
+<?php
 
 use Bitrix\Main\ModuleManager;
 use Bitrix\Main\Application;
@@ -45,7 +45,6 @@ class prominado_redirect extends CModule
 		$this->InstallDB();
 		$this->InstallEvents();
 		$this->InstallFiles();
-		CAdminMessage::ShowNote(Loc::getMessage('PROMINADO_REDIRECT_MODULE_INSTALLED'));
 
 		return true;
 	}
@@ -56,8 +55,12 @@ class prominado_redirect extends CModule
 		Loader::includeSharewareModule('prominado.redirect');
 		$connection = Application::getConnection();
 		if (!$connection->isTableExists(RedirectTable::getTableName())) {
-			RedirectTable::getEntity()->createDbTable();
-		}
+            try {
+                RedirectTable::getEntity()->createDbTable();
+            } catch (\Bitrix\Main\ArgumentException $e) {
+            } catch (\Bitrix\Main\SystemException $e) {
+            }
+        }
 	}
 
 	function InstallEvents()
@@ -80,7 +83,6 @@ class prominado_redirect extends CModule
 		ModuleManager::unRegisterModule($this->MODULE_ID);
 		$this->UnInstallFiles();
 		$this->UnInstallDB();
-		CAdminMessage::ShowNote(Loc::getMessage('PROMINADO_REDIRECT_MODULE_UNINSTALLED'));
 
 		return true;
 	}
@@ -91,8 +93,11 @@ class prominado_redirect extends CModule
 		Loader::includeSharewareModule('prominado.redirect');
 		$connection = Application::getConnection();
 		if ($connection->isTableExists(RedirectTable::getTableName())) {
-			$connection->dropTable(RedirectTable::getTableName());
-		}
+            try {
+                $connection->dropTable(RedirectTable::getTableName());
+            } catch (\Bitrix\Main\Db\SqlQueryException $e) {
+            }
+        }
 	}
 
 	function UnInstallEvents()

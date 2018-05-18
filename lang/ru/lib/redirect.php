@@ -1,4 +1,5 @@
-<?
+<?php
+
 $MESS['PROMINADO_REDIRECT_ID'] = 'Идентификатор';
 $MESS['PROMINADO_REDIRECT_OLD_URL'] = 'Старый URL';
 $MESS['PROMINADO_REDIRECT_NEW_URL'] = 'Новый URL';

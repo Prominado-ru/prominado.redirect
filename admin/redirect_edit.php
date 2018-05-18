@@ -2,8 +2,8 @@
 
 use Bitrix\Main\Loader;
 use Bitrix\Main\Localization\Loc;
-use Prominado\Redirect\RedirectTable;
 use Prominado\Redirect\Constant;
+use Prominado\Redirect\RedirectTable;
 
 require $_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/main/include/prolog_admin_before.php';
 
@@ -17,9 +17,9 @@ require $_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/main/include/prolog_admin_a
 
 $tabs = [];
 $tabs[] = [
-    'DIV'   => 'edit1',
-    'TAB'   => Loc::getMessage('PROMINADO_REDIRECT_REDIRECT'),
-    'ICON'  => 'main_user_edit',
+    'DIV' => 'edit1',
+    'TAB' => Loc::getMessage('PROMINADO_REDIRECT_REDIRECT'),
+    'ICON' => 'main_user_edit',
     'TITLE' => Loc::getMessage('PROMINADO_REDIRECT_REDIRECT_SETTINGS')
 ];
 
@@ -28,20 +28,23 @@ $tabControl = new \CAdminForm('prominado_redirect_edit', $tabs);
 $errorText = '';
 
 if (
-    ($_SERVER['REQUEST_METHOD'] == 'POST') &&
-    ($_POST['save'] <> '' || $_POST['apply'] <> '' || $_POST['save_and_add'] <> '') &&
+    ($_SERVER['REQUEST_METHOD'] === 'POST') &&
+    ($_POST['save'] !== '' || $_POST['apply'] !== '' || $_POST['save_and_add'] !== '') &&
     check_bitrix_sessid()
 ) {
     $fields = [
         'OLD_URL' => $_POST['OLD_URL'],
         'NEW_URL' => $_POST['NEW_URL'],
-        'CODE'    => $_POST['CODE']
+        'CODE' => $_POST['CODE']
     ];
 
-    if ($ID > 0) {
-        $el = RedirectTable::update($ID, $fields);
-    } else {
-        $el = RedirectTable::add($fields);
+    try {
+        if ($ID > 0) {
+            $el = RedirectTable::update($ID, $fields);
+        } else {
+            $el = RedirectTable::add($fields);
+        }
+    } catch (Exception $e) {
     }
 
     if ($el->isSuccess()) {
@@ -62,9 +65,9 @@ if (
 
 $menu = [];
 $menu[] = [
-    'TEXT'  => Loc::getMessage('PROMINADO_REDIRECT_REDIRECT_LIST'),
-    'LINK'  => '/bitrix/admin/prominado_redirect_list.php?lang=' . LANG,
-    'ICON'  => 'btn_list',
+    'TEXT' => Loc::getMessage('PROMINADO_REDIRECT_REDIRECT_LIST'),
+    'LINK' => '/bitrix/admin/prominado_redirect_list.php?lang=' . LANG,
+    'ICON' => 'btn_list',
     'TITLE' => Loc::getMessage('PROMINADO_REDIRECT_REDIRECT_LIST'),
 ];
 
@@ -95,18 +98,43 @@ if ($ID > 0) {
     $fields = $_POST;
 }
 
-$tabControl->AddEditField('OLD_URL', Loc::getMessage('PROMINADO_REDIRECT_OLD_URL'), true, ['size' => 30],
-    $fields['OLD_URL']);
-$tabControl->AddEditField('NEW_URL', Loc::getMessage('PROMINADO_REDIRECT_NEW_URL'), true, ['size' => 30],
-    $fields['NEW_URL']);
+$tabControl->AddEditField('OLD_URL', Loc::getMessage('PROMINADO_REDIRECT_NEW_URL'), true);
+$tabControl->AddViewField('OLD_URL', Loc::getMessage('PROMINADO_REDIRECT_OLD_URL'),
+    '<input type="text" name="OLD_URL" value="' . $fields['OLD_URL'] . '" size="30" placeholder="/about/">', true);
+
+$tabControl->AddViewField('OLD_URL_NOTES', '', '<table cellspacing="0" cellpadding="0" border="0" class="notes">
+            <tbody>
+            <tr class="top">
+                <td class="left"><div class="empty"></div></td>
+                <td><div class="empty"></div></td>
+                <td class="right"><div class="empty"></div></td>
+            </tr>
+            <tr>
+                <td class="left"><div class="empty"></div></td>
+                <td class="content">' . Loc::getMessage('PROMINADO_REDIRECT_OLD_URL_DESCRIPTION') . '</td>
+                <td class="right"><div class="empty"></div></td>
+            </tr>
+            <tr class="bottom">
+                <td class="left"><div class="empty"></div></td>
+                <td><div class="empty"></div></td>
+                <td class="right"><div class="empty"></div></td>
+            </tr>
+            </tbody>
+        </table>');
+
+$tabControl->AddEditField('NEW_URL', Loc::getMessage('PROMINADO_REDIRECT_NEW_URL'), true);
+$tabControl->AddViewField('NEW_URL', Loc::getMessage('PROMINADO_REDIRECT_NEW_URL'),
+    '<input type="text" name="NEW_URL" value="' . $fields['NEW_URL'] . '" size="30" placeholder="/about/company/">',
+    true);
+
 $tabControl->AddDropDownField('CODE', Loc::getMessage('PROMINADO_REDIRECT_CODE'), false, Constant::HTTP_CODES,
     $fields['CODE']);
 
 $tabControl->Buttons([
-    "disabled"      => false,
-    "btnSave"       => true,
-    "btnCancel"     => true,
-    "btnSaveAndAdd" => true,
+    'disabled' => false,
+    'btnSave' => true,
+    'btnCancel' => true,
+    'btnSaveAndAdd' => true,
 ]);
 
 $tabControl->Show();

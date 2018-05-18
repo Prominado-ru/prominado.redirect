@@ -2,8 +2,8 @@
 
 use Bitrix\Main\Loader;
 use Bitrix\Main\Localization\Loc;
-use Prominado\Redirect\RedirectTable;
 use Prominado\Redirect\Constant;
+use Prominado\Redirect\RedirectTable;
 
 require $_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/main/include/prolog_admin_before.php';
 
@@ -15,34 +15,37 @@ $tableId = 'prominado_redirect_list';
 $sort = new \CAdminSorting($tableId, 'ID', 'DESC');
 $lAdmin = new \CAdminUiList($tableId, $sort);
 
-if ($lAdmin->EditAction()) {
-    foreach ($_POST['FIELDS'] as $id => $fields) {
-        RedirectTable::update($id, $fields);
-    }
-}
-
-if ($ids = $lAdmin->GroupAction()) {
-    foreach ($ids as $id) {
-        switch ($_POST['action_button_' . $tableId]) {
-            case 'delete':
-                RedirectTable::delete($id);
-                break;
+try {
+    if ($lAdmin->EditAction()) {
+        foreach ($_POST['FIELDS'] as $id => $fields) {
+            RedirectTable::update($id, $fields);
         }
     }
+
+    if ($ids = $lAdmin->GroupAction()) {
+        foreach ($ids as $id) {
+            switch ($_POST['action_button_' . $tableId]) {
+                case 'delete':
+                    RedirectTable::delete($id);
+                    break;
+            }
+        }
+    }
+} catch (Exception $e) {
 }
 
 $headers = [
     ['id' => 'ID', 'content' => 'ID', 'sort' => 'ID', 'default' => true],
     [
-        'id'      => 'OLD_URL',
+        'id' => 'OLD_URL',
         'content' => Loc::getMessage('PROMINADO_REDIRECT_OLD_URL'),
-        'sort'    => 'OLD_URL',
+        'sort' => 'OLD_URL',
         'default' => true
     ],
     [
-        'id'      => 'NEW_URL',
+        'id' => 'NEW_URL',
         'content' => Loc::getMessage('PROMINADO_REDIRECT_NEW_URL'),
-        'sort'    => 'NEW_URL',
+        'sort' => 'NEW_URL',
         'default' => true
     ],
     ['id' => 'CODE', 'content' => Loc::getMessage('PROMINADO_REDIRECT_CODE'), 'sort' => 'CODE', 'default' => true],
@@ -72,51 +75,53 @@ foreach ($arFilter as $k => $v) {
             break;
     }
 }
+try {
+    $res = RedirectTable::getList([
+        'filter' => $filter,
+        'order' => [$sort->getField() => $sort->getOrder()],
+        'select' => $lAdmin->GetVisibleHeaderColumns()
+    ]);
+    $data = new \CAdminUiResult($res, $tableId);
+    $data->NavStart();
+    $lAdmin->SetNavigationParams($data);
 
-$res = RedirectTable::getList([
-    'filter' => $filter,
-    'order'  => [$sort->getField() => $sort->getOrder()],
-    'select' => $lAdmin->GetVisibleHeaderColumns()
-]);
-$data = new \CAdminUiResult($res, $tableId);
-$data->NavStart();
-$lAdmin->SetNavigationParams($data);
+    while ($ar = $data->Fetch()) {
+        $row =& $lAdmin->AddRow($ar['ID'], $ar);
 
-while ($ar = $data->Fetch()) {
-    $row =& $lAdmin->AddRow($ar['ID'], $ar);
+        $row->AddInputField('OLD_URL');
+        $row->AddInputField('NEW_URL');
+        $row->AddSelectField('CODE', Constant::HTTP_CODES);
 
-    $row->AddInputField('OLD_URL');
-    $row->AddInputField('NEW_URL');
-    $row->AddSelectField('CODE', Constant::HTTP_CODES);
-
-    $actions = [];
-    $actions[] = [
-        'ICON'    => 'edit',
-        'TEXT'    => Loc::getMessage('PROMINADO_REDIRECT_EDIT'),
-        'LINK'    => 'prominado_redirect_edit.php?lang=' . LANGUAGE_ID . '&ID=' . $ar['ID'],
-        'DEFAULT' => true
-    ];
-    $actions[] = [
-        'ICON'   => 'delete',
-        'TEXT'   => Loc::getMessage('PROMINADO_REDIRECT_DELETE'),
-        'ACTION' => 'if(confirm(\'' . Loc::getMessage('PROMINADO_REDIRECT_ARE_U_SURE') . '\')) ' . $lAdmin->ActionDoGroup($ar['ID'],
-                'delete')
-    ];
-    $row->AddActions($actions);
+        $actions = [];
+        $actions[] = [
+            'ICON' => 'edit',
+            'TEXT' => Loc::getMessage('PROMINADO_REDIRECT_EDIT'),
+            'LINK' => 'prominado_redirect_edit.php?lang=' . LANGUAGE_ID . '&ID=' . $ar['ID'],
+            'DEFAULT' => true
+        ];
+        $actions[] = [
+            'ICON' => 'delete',
+            'TEXT' => Loc::getMessage('PROMINADO_REDIRECT_DELETE'),
+            'ACTION' => 'if(confirm(\'' . Loc::getMessage('PROMINADO_REDIRECT_ARE_U_SURE') . '\')) ' . $lAdmin->ActionDoGroup($ar['ID'],
+                    'delete')
+        ];
+        $row->AddActions($actions);
+    }
+} catch (Exception $e) {
 }
 
 $context = [];
 $context[] = [
-    'TEXT'  => Loc::getMessage('PROMINADO_REDIRECT_NEW'),
-    'LINK'  => 'prominado_redirect_edit.php?lang=' . LANGUAGE_ID,
+    'TEXT' => Loc::getMessage('PROMINADO_REDIRECT_NEW'),
+    'LINK' => 'prominado_redirect_edit.php?lang=' . LANGUAGE_ID,
     'TITLE' => Loc::getMessage('PROMINADO_REDIRECT_NEW'),
-    'ICON'  => "btn_new"
+    'ICON' => 'btn_new'
 ];
 
 $lAdmin->AddAdminContextMenu($context);
 
 $lAdmin->AddGroupActionTable([
-    'edit'   => true,
+    'edit' => true,
     'delete' => true,
 ]);
 
